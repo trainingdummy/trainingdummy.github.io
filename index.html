@@ -6,13 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
     <script>
-        // Base URL for redirection
-        const baseURL = 'https://scrap.tf/raffles/';
+        // Perform redirection as soon as the script loads
+        (async function() {
+            // Base URL for redirection
+            const baseURL = 'https://scrap.tf/raffles/';
 
-        // Fetch the JSON file containing URL endings
-        fetch('endings.json')
-            .then(response => response.json())
-            .then(endings => {
+            try {
+                // Fetch the JSON file containing URL endings
+                const response = await fetch('endings.json');
+                const endings = await response.json();
+
                 // Randomly select an ending from the fetched JSON array
                 const randomIndex = Math.floor(Math.random() * endings.length);
                 const selectedEnding = endings[randomIndex];
@@ -22,26 +25,18 @@
 
                 // Redirect to the constructed full URL
                 window.location.href = fullURL;
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error fetching the URL endings:', error);
                 // Optionally provide a fallback URL in case of an error
                 window.location.href = baseURL + 'fallbackEnding';
-            });
+            }
+        })();
     </script>
 </head>
 <body>
-    <p>If you are not redirected automatically, <a id="redirectLink" href="#">click here</a>.</p>
-    <script>
-        // Update link for manual redirection fallback after fetching JSON
-        fetch('endings.json')
-            .then(response => response.json())
-            .then(endings => {
-                const randomIndex = Math.floor(Math.random() * endings.length);
-                const selectedEnding = endings[randomIndex];
-                const fullURL = baseURL + selectedEnding;
-                document.getElementById('redirectLink').href = fullURL;
-            });
-    </script>
+    <!-- This content will only display if JavaScript is disabled -->
+    <noscript>
+        <p>JavaScript is required for this page. Please enable JavaScript in your browser settings.</p>
+    </noscript>
 </body>
 </html>
